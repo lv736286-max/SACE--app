@@ -4,7 +4,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class HelpCenterPage extends StatefulWidget {
-  const HelpCenterPage({Key? key}) : super(key: key);
+  const HelpCenterPage({super.key});
 
   @override
   State<HelpCenterPage> createState() => _HelpCenterPageState();

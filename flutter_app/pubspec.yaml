@@ -20,3 +20,6 @@ flutter:
     - assets/icon1.svg
     - assets/icon2.svg
     - assets/icon3.svg
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test: any

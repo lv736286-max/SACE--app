@@ -3,7 +3,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
+  const RegistrationPage({super.key});
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
@@ -42,7 +42,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
     // Navigate to home after registration
     Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     });
   }
 

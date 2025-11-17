@@ -6,7 +6,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -250,7 +250,7 @@ class AlertCard {
 }
 
 class RegistrationPage extends StatefulWidget {
-  const RegistrationPage({Key? key}) : super(key: key);
+  const RegistrationPage({super.key});
 
   @override
   State<RegistrationPage> createState() => _RegistrationPageState();
@@ -440,7 +440,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
 }
 
 class EmergencyReportPage extends StatefulWidget {
-  const EmergencyReportPage({Key? key}) : super(key: key);
+  const EmergencyReportPage({super.key});
 
   @override
   State<EmergencyReportPage> createState() => _EmergencyReportPageState();
@@ -726,7 +726,7 @@ class _EmergencyReportPageState extends State<EmergencyReportPage> {
 }
 
 class AlertDetailsPage extends StatefulWidget {
-  const AlertDetailsPage({Key? key}) : super(key: key);
+  const AlertDetailsPage({super.key});
 
   @override
   State<AlertDetailsPage> createState() => _AlertDetailsPageState();
@@ -923,7 +923,7 @@ class ExpenseRow {
 }
 
 class AlertHistoryPage extends StatefulWidget {
-  const AlertHistoryPage({Key? key}) : super(key: key);
+  const AlertHistoryPage({super.key});
 
   @override
   State<AlertHistoryPage> createState() => _AlertHistoryPageState();
@@ -1140,7 +1140,7 @@ class _AlertHistoryPageState extends State<AlertHistoryPage> {
 }
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -1321,7 +1321,7 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 class HelpCenterPage extends StatefulWidget {
-  const HelpCenterPage({Key? key}) : super(key: key);
+  const HelpCenterPage({super.key});
 
   @override
   State<HelpCenterPage> createState() => _HelpCenterPageState();
@@ -1635,7 +1635,7 @@ class FAQ {
 }
 
 class MenuProfilePage extends StatefulWidget {
-  const MenuProfilePage({Key? key}) : super(key: key);
+  const MenuProfilePage({super.key});
 
   @override
   State<MenuProfilePage> createState() => _MenuProfilePageState();
@@ -2030,7 +2030,7 @@ class _MenuProfilePageState extends State<MenuProfilePage> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: const Color(0xFFB71C1C),
+            activeThumbColor: const Color(0xFFB71C1C),
           ),
         ],
       ),

@@ -3,7 +3,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class AlertHistoryPage extends StatefulWidget {
-  const AlertHistoryPage({Key? key}) : super(key: key);
+  const AlertHistoryPage({super.key});
 
   @override
   State<AlertHistoryPage> createState() => _AlertHistoryPageState();

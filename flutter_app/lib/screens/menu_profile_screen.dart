@@ -3,7 +3,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class MenuProfilePage extends StatefulWidget {
-  const MenuProfilePage({Key? key}) : super(key: key);
+  const MenuProfilePage({super.key});
 
   @override
   State<MenuProfilePage> createState() => _MenuProfilePageState();
@@ -388,7 +388,7 @@ class _MenuProfilePageState extends State<MenuProfilePage> {
           Switch(
             value: value,
             onChanged: onChanged,
-            activeColor: AppColors.primary,
+            activeThumbColor: AppColors.primary,
           ),
         ],
       ),

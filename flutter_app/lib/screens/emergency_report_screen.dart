@@ -3,7 +3,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class EmergencyReportPage extends StatefulWidget {
-  const EmergencyReportPage({Key? key}) : super(key: key);
+  const EmergencyReportPage({super.key});
 
   @override
   State<EmergencyReportPage> createState() => _EmergencyReportPageState();

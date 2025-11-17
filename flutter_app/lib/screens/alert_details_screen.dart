@@ -4,7 +4,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class AlertDetailsPage extends StatefulWidget {
-  const AlertDetailsPage({Key? key}) : super(key: key);
+  const AlertDetailsPage({super.key});
 
   @override
   State<AlertDetailsPage> createState() => _AlertDetailsPageState();

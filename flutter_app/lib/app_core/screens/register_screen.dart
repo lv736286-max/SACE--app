@@ -47,6 +47,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 12),
             ReusableButton(label: 'Registrarse', onPressed: () async {
               final ok = await auth.register(nameCtrl.text.trim(), emailCtrl.text.trim(), passCtrl.text.trim(), role);
+              if (!mounted) return;
               if (ok) Navigator.of(context).pushReplacementNamed(AppRoutes.home);
             }),
           ],

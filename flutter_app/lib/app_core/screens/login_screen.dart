@@ -34,6 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 18),
               ReusableButton(label: 'Iniciar sesión', onPressed: () async {
                 final ok = await auth.login(emailCtrl.text.trim(), passCtrl.text.trim());
+                if (!mounted) return;
                 if (ok) {
                   Navigator.of(context).pushReplacementNamed(AppRoutes.home);
                 }

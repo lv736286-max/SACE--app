@@ -34,6 +34,7 @@ class _EmergencyScreenState extends State<EmergencyScreen> {
             ReusableButton(label: provider.sending ? 'Enviando...' : 'Enviar alerta', onPressed: () async {
               final e = Emergency(id: DateTime.now().millisecondsSinceEpoch.toString(), type: typeCtrl.text.trim(), location: locCtrl.text.trim(), description: descCtrl.text.trim());
               final ok = await provider.send(e);
+              if (!mounted) return;
               if (ok) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Alerta enviada')));
                 Navigator.of(context).pop();

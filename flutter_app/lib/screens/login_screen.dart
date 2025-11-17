@@ -3,7 +3,7 @@ import '../utils/theme.dart';
 import '../utils/widgets.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -26,7 +26,9 @@ class _LoginPageState extends State<LoginPage> {
     );
     // Navigate to home after login
     Future.delayed(const Duration(milliseconds: 500), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     });
   }
 
