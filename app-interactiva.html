@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SACE - Aplicación Móvil</title>
+    <style>
+        :root{
+            --primary: #B71C1C;
+            --muted: #f2efec;
+            --accent: #e6e6e6;
+            --text: #333;
+            --card-border: #e6e6e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--muted);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 380px;
+            max-width: 92vw;
+            height: 820px;
+            background: white;
+            border-radius: 24px;
+            border: 12px solid rgba(200,190,188,0.6);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.18), inset 0 2px 0 rgba(255,255,255,0.4);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Header */
+        .header {
+            background-color: var(--primary);
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+            border-top-left-radius: 14px;
+            border-top-right-radius: 14px;
+            box-shadow: 0 3px 0 rgba(0,0,0,0.06);
+        }
+
+        .back-btn {
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: opacity 0.15s, transform 0.15s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .back-btn:hover { opacity: 0.9; transform: translateX(-2px); }
+
+        /* Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px 20px;
+            padding-bottom: 90px;
+        }
+
+        /* Panel interior para dar efecto de tarjeta central (como en las vistas) */
+        .panel-inner {
+            background: white;
+            border-radius: 12px;
+            padding: 140px 18px 28px 18px; /* espacio suficiente para logo dentro del panel */
+            max-width: 320px;
+            margin: 6px auto 20px auto;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+            border: 1px solid var(--card-border);
+            position: relative;
+        }
+
+        /* Header con título centrado estilo imagen */
+        .header { position: relative; }
+        .header .center-title {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* Botón pequeño outline para 'Ver Más' */
+        .btn-sm-outline {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: transparent;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Campos de formulario compactos */
+        .panel-inner .form-input { width: 100%; }
+
+        /* Logo */
+        .logo {
+            width: 120px;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Mostrar el logo como parte del panel: pseudo-elemento en .panel-inner
+           Coloca el logo (archivo externo `assets/logo.png`) integrado en el panel */
+        .panel-inner::before {
+            content: '';
+            position: absolute;
+            top: 12px; /* logo dentro del panel, más abajo para verse completo */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 112px;
+            height: 112px;
+            /* el nombre del archivo contiene un espacio: escape con %20 */
+            background-image: url('assets/logo%20sace.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            border-radius: 0;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+        }
+
+        /* Títulos */
+        .title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #BDBDBD;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 4px 18px rgba(183,28,28,0.08);
+        }
+
+        /* Roles */
+        .roles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .role-option {
+            padding: 10px 12px;
+            border: 1.5px solid var(--card-border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.18s;
+            background: white;
+            color: var(--text);
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+        }
+
+        .role-option.selected {
+            background: var(--primary);
+            color: white;
+            border-color: rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        /* Botones */
+        .btn {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.12s, box-shadow 0.12s;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 20px rgba(183,28,28,0.12);
+        }
+
+        .btn:hover { transform: translateY(-3px); }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            border: 2px solid rgba(183,28,28,0.12);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.03);
+        }
+
+        .btn-outline {
+            background: white;
+            color: var(--primary);
+            border: 2px solid var(--card-border);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        /* Alertas */
+        .alert-card {
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 18px;
+            background: white;
+            box-shadow: 0 10px 24px rgba(0,0,0,0.03);
+        }
+
+        .alert-title {
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .alert-description {
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            right: 12px;
+            height: 66px;
+            background: white;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 6px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            color: #9e9e9e;
+            transition: color 0.12s, transform 0.12s;
+            text-decoration: none;
+            width: 64px;
+        }
+
+        .nav-item.active { color: var(--primary); transform: translateY(-3px); font-weight: 700; }
+
+        .nav-icon { font-size: 20px; }
+
+        /* Scrollbar */
+        .content::-webkit-scrollbar { width: 6px; }
+        .content::-webkit-scrollbar-track { background: transparent; }
+        .content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 6px; }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- PANTALLA LOGIN -->
+        <div class="screen active" id="login-screen">
+            <div class="content"><div class="panel-inner">
+                <div style="height:44px"></div>
+                <div class="title">Iniciar Sesión</div>
+                <div class="form-group">
+                    <label class="form-label">Correo</label>
+                    <input type="email" class="form-input" id="login-email" placeholder="tu@correo.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-input" id="login-password" placeholder="••••••••">
+                </div>
+                <button class="btn btn-secondary" onclick="goToScreen('register-screen')">¿No tienes cuenta?</button>
+                <button class="btn" onclick="goToScreen('home-screen')">Inicia sesión</button>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA REGISTRO -->
+        <div class="screen" id="register-screen">
+            <div class="content"><div class="panel-inner">
+                <div style="height:44px"></div>
+                <div class="title">Registrate</div>
+                <div class="form-group">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" class="form-input" placeholder="Tu nombre">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Documento</label>
+                    <input type="text" class="form-input" placeholder="123456789">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Correo</label>
+                    <input type="email" class="form-input" placeholder="tu@correo.com">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contraseña</label>
+                    <input type="password" class="form-input" placeholder="••••••••">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; flex-shrink: 0;">A</div>
+                        <span>Rol en el colegio:</span>
+                    </label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;">
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="rol" value="Administrativo" onclick="selectRole(this.parentElement.parentElement, 'Administrativo')"> 
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: var(--primary); font-weight: 700; font-size: 18px;">⭐</span>
+                                <strong>Administrativo</strong>
+                            </span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="rol" value="Docente" onclick="selectRole(this.parentElement.parentElement, 'Docente')"> 
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: var(--primary); font-weight: 700; font-size: 18px;">⭐</span>
+                                <strong>Docente</strong>
+                            </span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; width: 100%;">
+                            <input type="radio" name="rol" value="Restaurante" onclick="selectRole(this.parentElement.parentElement, 'Restaurante')"> 
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: var(--primary); font-weight: 700; font-size: 18px;">⭐</span>
+                                <strong>Restaurante</strong>
+                            </span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                            <input type="radio" name="rol" value="Aseo" onclick="selectRole(this.parentElement.parentElement, 'Aseo')"> 
+                            <span style="display: flex; align-items: center; gap: 4px;">
+                                <span style="color: var(--primary); font-weight: 700; font-size: 18px;">⭐</span>
+                                <strong>Aseo</strong>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" onclick="goToScreen('login-screen')">¿Ya tienes cuenta?</button>
+                <button class="btn" onclick="goToScreen('home-screen')">Registrate</button>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA HOME -->
+        <div class="screen" id="home-screen">
+            <div class="header"><div class="center-title">Inicio</div></div>
+            <div class="content"><div class="panel-inner">
+                <div class="alert-card">
+                    <div class="alert-title">Alerta N.1</div>
+                    <div class="alert-description">Incendio en aula múltiple. Por favor, trasladarse a la zona de punto de encuentro del IDEMAG</div>
+                    <div style="text-align:right; margin-top:8px;"><button class="btn-sm-outline" onclick="goToScreen('alert-details-screen')">Ver Más</button></div>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-title">Alerta N.2</div>
+                    <div class="alert-description">Persona desmayada en baño de mujeres. Se solicita personal de enfermería urgente.</div>
+                    <div style="text-align:right; margin-top:8px;"><button class="btn-sm-outline" onclick="goToScreen('alert-details-screen')">Ver Más</button></div>
+                </div>
+                <div class="alert-card">
+                    <div class="alert-title">Alerta N.3</div>
+                    <div class="alert-description">Se reporta sismo en el IDEMAG. Por favor todos los estudiantes y personas que se encuentren dentro, reunirse en los puntos de encuentro</div>
+                    <div style="text-align:right; margin-top:8px;"><button class="btn-sm-outline" onclick="goToScreen('alert-details-screen')">Ver Más</button></div>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA EMERGENCIA -->
+        <div class="screen" id="emergency-screen">
+            <div class="header"><span class="back-btn" onclick="goToScreen('home-screen')">←</span><div class="center-title">Reportar emergencia</div></div>
+            <div class="content"><div class="panel-inner">
+                <div class="form-group">
+                    <label class="form-label">Tipo de emergencia:</label>
+                    <div class="roles">
+                        <div class="role-option" onclick="selectRole(this, 'Incendio')">Incendio</div>
+                        <div class="role-option" onclick="selectRole(this, 'Temblor')">Temblor</div>
+                        <div class="role-option" onclick="selectRole(this, 'Accidente')">Accidente</div>
+                        <div class="role-option" onclick="selectRole(this, 'Otro')">Otro</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ubicación:</label>
+                    <div class="roles">
+                        <div class="role-option" onclick="selectRole(this, 'Baños')">Baños</div>
+                        <div class="role-option" onclick="selectRole(this, 'Cocina')">Cocina</div>
+                        <div class="role-option" onclick="selectRole(this, 'Salón')">Salón</div>
+                        <div class="role-option" onclick="selectRole(this, 'Patio')">Patio</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Observaciones:</label>
+                    <textarea class="form-input" style="resize: vertical; min-height: 100px;" placeholder="Describe lo que ves..."></textarea>
+                </div>
+                <button class="btn" onclick="alert('Alerta reportada exitosamente'); goToScreen('home-screen')">Enviar alerta</button>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA ALERTAS -->
+        <div class="screen" id="alerts-screen">
+            <div class="header"><span class="back-btn" onclick="goToScreen('home-screen')">←</span><div class="center-title">Historial de alertas</div></div>
+            <div class="content"><div class="panel-inner">
+                <div class="form-group">
+                    <label class="form-label">Filtrar por tipo:</label>
+                    <select class="form-input">
+                        <option>Temblor</option>
+                        <option>Persona desmayada</option>
+                        <option>Incendio</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Filtrar por estado:</label>
+                    <select class="form-input">
+                        <option>Atendido</option>
+                        <option>En proceso</option>
+                        <option>En espera</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="goToScreen('alert-details-screen')">Ver detalles</button>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA DETALLES -->
+        <div class="screen" id="alert-details-screen">
+            <div class="header"><span class="back-btn" onclick="goToScreen('home-screen')">←</span><div class="center-title">Detalles</div></div>
+            <div class="content"><div class="panel-inner">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="background: var(--accent);">
+                            <th style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Cantidad</th>
+                            <th style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Gastos</th>
+                            <th style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Concepto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">5</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">1200</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Alquilar</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">4</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">500</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Electricidad</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">3</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">4500</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Ropa</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">2</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">3000</td>
+                            <td style="padding: 10px; border: 1px solid #e0e0e0; text-align: center;">Entretenimiento</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn" onclick="goToScreen('home-screen')">Volver a inicio</button>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA MENÚ -->
+        <div class="screen" id="menu-screen">
+            <div class="header"><span class="back-btn" onclick="goToScreen('home-screen')">←</span><div class="center-title">Menú</div></div>
+            <div class="content"><div class="panel-inner">
+                <!-- SECCIÓN MENÚ -->
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #e0e0e0;" onclick="toggleSection('menu-section')">
+                        <span style="font-size: 18px;" id="menu-section-toggle">▶</span>
+                        <strong style="font-size: 16px;">Menú</strong>
+                    </div>
+                    <div id="menu-section" style="display: none; padding-top: 12px;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; padding: 8px 0;">
+                            <span style="color: var(--primary); font-size: 16px;">★</span>
+                            <span onclick="goToScreen('emergency-screen')">Reportar emergencia</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; padding: 8px 0;">
+                            <span style="color: var(--primary); font-size: 16px;">★</span>
+                            <span onclick="goToScreen('alerts-screen')">Ver historial</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; padding: 8px 0;">
+                            <span style="color: var(--primary); font-size: 16px;">★</span>
+                            <span onclick="goToScreen('help-screen')">Mas opciones</span>
+                        </div>
+                        <button class="btn btn-secondary" style="margin-top: 12px;" onclick="alert('Siguiente')">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN CONFIGURACIÓN -->
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px 0; border-bottom: 1px solid #e0e0e0;" onclick="toggleSection('config-section')">
+                        <span style="font-size: 18px;" id="config-section-toggle">▼</span>
+                        <strong style="font-size: 16px;">Configuración</strong>
+                    </div>
+                    <div id="config-section" style="display: block; padding-top: 12px;">
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <span style="color: var(--primary); font-size: 14px;">★</span>
+                                <strong>Contraseña actual</strong>
+                            </label>
+                            <input type="password" class="form-input" placeholder="••••••••">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <span style="color: var(--primary); font-size: 14px;">★</span>
+                                <strong>Nueva contraseña</strong>
+                            </label>
+                            <input type="password" class="form-input" placeholder="••••••••">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <span style="color: var(--primary); font-size: 14px;">★</span>
+                                <strong>Confirmar contraseña</strong>
+                            </label>
+                            <input type="password" class="form-input" placeholder="••••••••">
+                        </div>
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                                <span style="color: var(--primary); font-size: 14px;">★</span>
+                                <strong>Guardar cambios</strong>
+                            </label>
+                        </div>
+                        <button class="btn btn-secondary" onclick="alert('Cambios guardados'); goToScreen('home-screen')">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- BOTÓN CERRAR SESIÓN -->
+                <button class="btn btn-secondary" style="margin-top: 24px; border-color: var(--primary); color: var(--primary);" onclick="alert('Sesión cerrada'); goToScreen('login-screen')">Cerrar sesión</button>
+            </div></div>
+        </div>
+
+        <!-- PANTALLA AYUDA -->
+        <div class="screen" id="help-screen">
+            <div class="header"><span class="back-btn" onclick="goToScreen('home-screen')">←</span><div class="center-title">Centro de ayuda</div></div>
+            <div class="content"><div class="panel-inner">
+                <div class="alert-card" style="background: #F5F5F5; border: none;">
+                    <div class="alert-title">¿Cómo reportar una emergencia?</div>
+                    <div class="alert-description">Accede a "Reportar emergencia" en el menú, selecciona el tipo de emergencia, la ubicación y descripción.</div>
+                </div>
+                <div class="alert-card" style="background: #F5F5F5; border: none;">
+                    <div class="alert-title">¿Qué hacer después de reportar?</div>
+                    <div class="alert-description">El sistema notificará a los encargados. Puedes ver el estado en el historial de alertas.</div>
+                </div>
+                <div class="alert-card" style="background: #F5F5F5; border: none;">
+                    <div class="alert-title">¿Cómo cambiar mi contraseña?</div>
+                    <div class="alert-description">Ve a Menú > Configuración y selecciona "Cambiar contraseña".</div>
+                </div>
+            </div></div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <div class="bottom-nav" role="navigation" aria-label="Bottom Navigation">
+            <button class="nav-item active" data-screen="home-screen" onclick="goToScreen('home-screen'); updateNav(this)">
+                <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 10.5L12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1V10.5z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Home</span>
+            </button>
+            <button class="nav-item" data-screen="emergency-screen" onclick="goToScreen('emergency-screen'); updateNav(this)">
+                <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 10h12M7 21h10a1 1 0 0 0 1-1V11a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Citas</span>
+            </button>
+            <button class="nav-item" data-screen="alerts-screen" onclick="goToScreen('alerts-screen'); updateNav(this)">
+                <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 17a3 3 0 0 1-6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 8a6 6 0 1 0-12 0v4l-2 2h16l-2-2V8z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Notif</span>
+            </button>
+            <button class="nav-item" data-screen="menu-screen" onclick="goToScreen('menu-screen'); updateNav(this)">
+                <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                <span>Perfil</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function goToScreen(screenId) {
+            // Ocultar todas las pantallas
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            // Mostrar la pantalla seleccionada
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function selectRole(element, role) {
+            // Remover selección anterior del grupo
+            element.parentElement.querySelectorAll('.role-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            // Agregar selección al elemento clickeado
+            element.classList.add('selected');
+        }
+
+        function updateNav(el) {
+            // El parámetro `el` es el botón (o elemento) clickeado
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if (!el) return;
+            // si se pasa el elemento, activarlo
+            el.classList.add('active');
+        }
+
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const toggle = document.getElementById(sectionId + '-toggle');
+            if (section.style.display === 'none' || section.style.display === '') {
+                section.style.display = 'block';
+                toggle.textContent = '▼';
+            } else {
+                section.style.display = 'none';
+                toggle.textContent = '▶';
+            }
+        }
+    </script>
+</body>
+</html>

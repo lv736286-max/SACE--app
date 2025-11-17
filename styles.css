@@ -1,0 +1,93 @@
+/* Basic reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html,body { height: 100%; font-family: 'Arial', sans-serif; background: #f5f5f5; }
+
+.phone { display:flex; align-items:center; justify-content:center; height:100vh; background: #f3efe9; }
+.screen { width:360px; height:780px; border-radius:28px; background:#fff; border:10px solid #eee7e3; box-shadow:0 18px 40px rgba(0,0,0,0.12); position:relative; overflow:hidden; }
+
+.logo-area { display:flex; justify-content:center; padding-top:42px; }
+.shield { width:170px; height:auto; }
+.logo-img { width:170px; height:auto; display:block; filter: drop-shadow(0 4px 0 rgba(0,0,0,0.03)); }
+
+/* Optional phone frame overlay */
+.phone-frame {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 392px; /* slightly wider than screen to include border */
+  pointer-events: none;
+  z-index: 60;
+}
+
+.center-area { display:flex; justify-content:center; align-items:center; height:56%; }
+.pill {
+  background: #ffffff;
+  border-radius:28px;
+  padding:14px 34px;
+  font-size:18px;
+  font-weight:600;
+  color:#222;
+  border:0;
+  cursor:pointer;
+  box-shadow: 0 18px 30px rgba(0,0,0,0.12), inset 0 -2px 0 rgba(0,0,0,0.02);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.pill:active { transform:translateY(3px); box-shadow:0 8px 14px rgba(0,0,0,0.09); }
+
+.bottom-icons { position:absolute; bottom:46px; left:0; right:0; display:flex; justify-content:center; gap:44px; }
+.bottom-icons .icon { width:68px; height:68px; display:flex; align-items:center; justify-content:center; background:transparent; border-radius:999px; transition: transform .12s ease; }
+.bottom-icons .icon:hover { transform: translateY(-4px); }
+.bottom-icons img, .bottom-icons svg { width:40px; height:40px; }
+
+/* Responsive scaling for smaller screens */
+@media (max-width:420px) {
+  .screen { transform:scale(.92); }
+}
+
+/* Small animation when opening */
+.screen.fade-in { animation: fadeIn 600ms ease both; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: white;
+  border-top: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 0 0 28px 28px;
+  z-index: 50;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #999;
+  font-size: 10px;
+  transition: color 0.3s;
+}
+
+.nav-item:hover {
+  color: #b71c1c;
+}
+
+.nav-item.active {
+  color: #b71c1c;
+  font-weight: 600;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}

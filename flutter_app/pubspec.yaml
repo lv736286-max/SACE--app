@@ -1,0 +1,22 @@
+name: sace_mockup
+description: Demo de la maqueta SACE en Flutter
+version: 0.0.1
+environment:
+  sdk: ">=2.18.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  flutter_svg: ^2.0.7
+  provider: ^6.0.5
+  http: ^0.13.5
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/logo.svg
+    - assets/logo.png
+    - assets/icon1.svg
+    - assets/icon2.svg
+    - assets/icon3.svg

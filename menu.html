@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - SACE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 360px;
+            height: 780px;
+            background: white;
+            border: 10px solid #EEE7E3;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background-color: #B71C1C;
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 70px;
+        }
+
+        /* Section */
+        .section {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 16px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 0;
+            cursor: pointer;
+            user-select: none;
+            font-weight: 700;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .section-header:hover {
+            opacity: 0.8;
+        }
+
+        .section-icon {
+            font-size: 20px;
+            min-width: 24px;
+        }
+
+        .section-content {
+            margin-left: 32px;
+            padding-bottom: 12px;
+        }
+
+        .section-content.hidden {
+            display: none;
+        }
+
+        /* Menu Items */
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+            font-size: 15px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .menu-item:hover {
+            color: #B71C1C;
+        }
+
+        /* Field Groups */
+        .field-group {
+            margin-bottom: 12px;
+        }
+
+        .field-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .field-icon {
+            color: #B71C1C;
+            font-size: 18px;
+        }
+
+        .star {
+            color: #B71C1C;
+            font-size: 16px;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #BDBDBD;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .field-input:focus {
+            outline: none;
+            border-color: #B71C1C;
+            box-shadow: 0 0 0 2px rgba(183, 28, 28, 0.1);
+        }
+
+        /* Notification Toggle */
+        .notification-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .notification-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            color: #333;
+        }
+
+        .toggle-switch {
+            width: 50px;
+            height: 28px;
+            background-color: #ccc;
+            border-radius: 14px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.active {
+            background-color: #B71C1C;
+        }
+
+        .toggle-dot {
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: all 0.2s;
+        }
+
+        .toggle-switch.active .toggle-dot {
+            left: 24px;
+        }
+
+        /* Button */
+        .next-btn {
+            background: white;
+            color: #B71C1C;
+            border: 1.5px solid #B71C1C;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            margin-top: 12px;
+            transition: all 0.2s;
+        }
+
+        .next-btn:hover {
+            background: #f5f5f5;
+        }
+
+        /* Bottom Buttons */
+        .bottom-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .bottom-btn {
+            flex: 1;
+            padding: 12px;
+            background-color: #f0f0f0;
+            color: #333;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .bottom-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 0 0 28px 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            font-size: 10px;
+            color: #999;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            color: #B71C1C;
+            font-weight: 600;
+        }
+
+        .nav-item:hover {
+            color: #B71C1C;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Scrollbar styling */
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #B71C1C;
+            border-radius: 3px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #a01717;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- Header -->
+        <div class="header">
+            <span class="back-btn" onclick="history.back();">&lt;</span>
+            <span>Menú</span>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Menu Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection('menu-section')">
+                    <span class="section-icon">▶</span>
+                    <span>Menú</span>
+                </div>
+                <div id="menu-section" class="section-content">
+                    <div class="menu-item" onclick="navigate('emergency')"><span class="star">★</span> Reportar emergencia</div>
+                    <div class="menu-item" onclick="navigate('alerts')"><span class="star">★</span> Ver historial</div>
+                    <div class="menu-item"><span class="star">★</span> Mas opciones</div>
+                    <button class="next-btn">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Configuration Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection('config-section')">
+                    <span class="section-icon">▶</span>
+                    <span>Configuración</span>
+                </div>
+                <div id="config-section" class="section-content hidden">
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Contraseña actual</span>
+                        </div>
+                        <input type="password" class="field-input" placeholder="">
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Nueva contraseña</span>
+                        </div>
+                        <input type="password" class="field-input" placeholder="">
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Confirmar contraseña</span>
+                        </div>
+                        <input type="password" class="field-input" placeholder="">
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Guardar cambios</span>
+                        </div>
+                    </div>
+                    <button class="next-btn">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Profile Information Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection('profile-section')">
+                    <span class="section-icon">▶</span>
+                    <span>Información de perfil</span>
+                </div>
+                <div id="profile-section" class="section-content hidden">
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Editar información</span>
+                        </div>
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Nombre</span>
+                        </div>
+                        <input type="text" class="field-input" value="Juan Pérez">
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Correo institucional</span>
+                        </div>
+                        <input type="email" class="field-input" value="juan.perez@institution.edu">
+                    </div>
+                    <div class="field-group">
+                        <div class="field-label">
+                            <span class="star">★</span>
+                            <span>Rol</span>
+                        </div>
+                        <input type="text" class="field-input" value="Estudiante">
+                    </div>
+                    <button class="next-btn">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Notifications Settings Section -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection('notifications-section')">
+                    <span class="section-icon">▶</span>
+                    <span>Ajustar notificaciones<br>(tipo de alertas a recibir)</span>
+                </div>
+                <div id="notifications-section" class="section-content hidden">
+                    <div class="notification-item">
+                        <div class="notification-label">
+                            <span class="star">★</span>
+                            <span>🔥 Incendio</span>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                            <div class="toggle-dot"></div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-label">
+                            <span class="star">★</span>
+                            <span>⛈️ Temblor</span>
+                        </div>
+                        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                            <div class="toggle-dot"></div>
+                        </div>
+                    </div>
+                    <div class="notification-item">
+                        <div class="notification-label">
+                            <span class="star">★</span>
+                            <span>🚗 Accidente</span>
+                        </div>
+                        <div class="toggle-switch" onclick="toggleSwitch(this)">
+                            <div class="toggle-dot"></div>
+                        </div>
+                    </div>
+                    <button class="next-btn">Siguiente</button>
+                </div>
+            </div>
+
+            <!-- Bottom Buttons -->
+            <div class="bottom-buttons">
+                <button class="bottom-btn" onclick="saveChanges()">Enviar</button>
+                <button class="bottom-btn" onclick="logout()">Cerrar sesión</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="emergency.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h4V9H3v8.25zM9 3h6v4H9V3zm9.5 2.5h-4v4h4v-4zm0 6h-4v4h4v-4zm0 6h-4v4h4v-4z"/></svg>
+                <span>Citas</span>
+            </a>
+            <a href="#" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                <span>Notif</span>
+            </a>
+            <a href="menu.html" class="nav-item active">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Perfil</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const header = section.previousElementSibling;
+            section.classList.toggle('hidden');
+            
+            const icon = header.querySelector('.section-icon');
+            if (section.classList.contains('hidden')) {
+                icon.textContent = '▶';
+            } else {
+                icon.textContent = '▼';
+            }
+        }
+
+        function toggleSwitch(element) {
+            element.classList.toggle('active');
+        }
+
+        function saveChanges() {
+            alert('Cambios guardados');
+        }
+
+        function logout() {
+            alert('Sesión cerrada');
+            // Redirect to login
+        }
+
+        function navigate(page) {
+            alert(`Navegando a ${page}`);
+        }
+    </script>
+</body>
+</html>

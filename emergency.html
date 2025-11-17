@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportar emergencia - SACE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .phone-frame {
+            width: 360px;
+            height: 780px;
+            background: white;
+            border: 10px solid #EEE7E3;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Header */
+        .header {
+            background-color: #B71C1C;
+            color: white;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .back-btn {
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 18px;
+            padding-bottom: 70px;
+        }
+
+        .section {
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .location-icon {
+            color: #B71C1C;
+            font-size: 24px;
+        }
+
+        /* Button Grid */
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .grid-button {
+            padding: 12px;
+            border: 1.5px solid #000;
+            border-radius: 4px;
+            background: white;
+            color: #000;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .grid-button:hover {
+            border-color: #B71C1C;
+        }
+
+        .grid-button.selected {
+            background-color: #B71C1C;
+            color: white;
+            border-color: #B71C1C;
+        }
+
+        /* Observations Textarea */
+        .observations-area {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #BDBDBD;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.2s;
+        }
+
+        .observations-area:focus {
+            outline: none;
+            border-color: #B71C1C;
+            box-shadow: 0 0 0 2px rgba(183, 28, 28, 0.1);
+        }
+
+        /* Buttons */
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 16px;
+            background-color: #B71C1C;
+            color: white;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(183, 28, 28, 0.4);
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(183, 28, 28, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        .status-btn {
+            width: 100%;
+            padding: 14px;
+            background-color: #B71C1C;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: default;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(183, 28, 28, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-radius: 0 0 28px 28px;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            cursor: pointer;
+            font-size: 10px;
+            color: #999;
+            transition: color 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            color: #B71C1C;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Scrollbar styling */
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: #B71C1C;
+            border-radius: 3px;
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: #a01717;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <!-- Header -->
+        <div class="header">
+            <span class="back-btn" onclick="history.back();">&lt;</span>
+            <span>Reportar emergencia</span>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Emergency Type Section -->
+            <div class="section">
+                <div class="section-title">Tipo de emergencia:</div>
+                <div class="button-grid">
+                    <button class="grid-button" onclick="selectEmergency(this)">Incendio</button>
+                    <button class="grid-button" onclick="selectEmergency(this)">Temblor</button>
+                    <button class="grid-button" onclick="selectEmergency(this)">Accidente</button>
+                    <button class="grid-button" onclick="selectEmergency(this)">Otro</button>
+                </div>
+            </div>
+
+            <!-- Location Section -->
+            <div class="section">
+                <div class="section-title">
+                    Ubicación:
+                    <span class="location-icon">📍</span>
+                </div>
+                <div class="button-grid">
+                    <button class="grid-button" onclick="selectLocation(this)">Baños</button>
+                    <button class="grid-button" onclick="selectLocation(this)">Cocina</button>
+                    <button class="grid-button" onclick="selectLocation(this)">Salon</button>
+                    <button class="grid-button" onclick="selectLocation(this)">Patio</button>
+                    <button class="grid-button" onclick="selectLocation(this)">Oficina Adm.</button>
+                    <button class="grid-button" onclick="selectLocation(this)">Otro</button>
+                </div>
+            </div>
+
+            <!-- Observations Section -->
+            <div class="section">
+                <div class="section-title">Observaciones:</div>
+                <textarea id="observationsInput" class="observations-area" placeholder="..."></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button id="submitBtn" class="submit-btn" onclick="submitEmergency()">Enviar alerta</button>
+
+            <!-- Status Message -->
+            <button id="statusBtn" class="status-btn hidden">Pendiente hasta revisión</button>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <a href="home.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="emergency.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h4V9H3v8.25zM9 3h6v4H9V3zm9.5 2.5h-4v4h4v-4zm0 6h-4v4h4v-4zm0 6h-4v4h4v-4z"/></svg>
+                <span>Citas</span>
+            </a>
+            <a href="#" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                <span>Notif</span>
+            </a>
+            <a href="menu.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                <span>Perfil</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        let selectedEmergency = null;
+        let selectedLocation = null;
+        let isSubmitted = false;
+
+        function selectEmergency(btn) {
+            const buttons = btn.parentElement.querySelectorAll('.grid-button');
+            buttons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedEmergency = btn.textContent;
+        }
+
+        function selectLocation(btn) {
+            const buttons = btn.parentElement.querySelectorAll('.grid-button');
+            buttons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedLocation = btn.textContent;
+        }
+
+        function submitEmergency() {
+            if (!selectedEmergency || !selectedLocation) {
+                alert('Por favor selecciona tipo de emergencia y ubicación');
+                return;
+            }
+
+            isSubmitted = true;
+            document.getElementById('submitBtn').classList.add('hidden');
+            document.getElementById('statusBtn').classList.remove('hidden');
+            
+            alert(`Alerta reportada: ${selectedEmergency} en ${selectedLocation}`);
+        }
+    </script>
+</body>
+</html>

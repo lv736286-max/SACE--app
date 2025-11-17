@@ -1,0 +1,15 @@
+{
+  "name": "sace-app",
+  "version": "1.0.0",
+  "description": "Sistema de Alertas Escolares - SACE",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "author": "SACE Team",
+  "license": "MIT"
+}

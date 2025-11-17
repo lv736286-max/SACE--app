@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Same logo SVG for Flutter assets -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220">
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#a91a1a" />
+      <stop offset="100%" stop-color="#d43b3b" />
+    </linearGradient>
+  </defs>
+  <path d="M100 8 L172 40 V102 C172 152 132 199 100 210 C68 199 28 152 28 102 V40 Z" fill="url(#g)" stroke="#6b0f0f" stroke-width="2"/>
+  <rect x="32" y="46" width="136" height="38" fill="#fff" rx="4"/>
+  <text x="100" y="76" text-anchor="middle" font-size="26" font-family="Arial" fill="#fff" font-weight="700">SACE</text>
+  <g transform="translate(34,96)" fill="#fff" font-size="18">
+    <rect width="60" height="44" rx="4" fill="#fff"/>
+    <rect x="76" width="60" height="44" rx="4" fill="#fff"/>
+    <rect y="56" width="60" height="44" rx="4" fill="#fff"/>
+    <rect x="76" y="56" width="60" height="44" rx="4" fill="#fff"/>
+    <text x="30" y="30" text-anchor="middle" fill="#b71c1c">🔔</text>
+    <text x="106" y="30" text-anchor="middle" fill="#b71c1c">🏠</text>
+    <text x="30" y="86" text-anchor="middle" fill="#b71c1c">📍</text>
+    <text x="106" y="86" text-anchor="middle" fill="#b71c1c">👤</text>
+  </g>
+  <text x="100" y="202" text-anchor="middle" font-size="12" font-family="Arial" fill="#7a0f0f">Seguridad ante todo</text>
+</svg>

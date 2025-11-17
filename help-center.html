@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de ayuda y soporte</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f5f5f5 0%, #eee7e3 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .phone-frame {
+      width: 360px;
+      height: 780px;
+      background: white;
+      border-radius: 28px;
+      border: 10px solid #eee7e3;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .header {
+      background-color: #b71c1c;
+      padding: 18px;
+      text-align: center;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      padding-bottom: 68px;
+    }
+
+    .faq-section {
+      margin-bottom: 20px;
+    }
+
+    .faq-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .star {
+      color: #b71c1c;
+      font-size: 18px;
+    }
+
+    .faq-item {
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      background: white;
+    }
+
+    .faq-question {
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+    }
+
+    .faq-question:hover {
+      background-color: #f5f5f5;
+    }
+
+    .faq-toggle {
+      font-size: 16px;
+      color: #999;
+    }
+
+    .faq-item.expanded .faq-toggle {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 12px;
+      font-size: 12px;
+      color: #666;
+      border-top: 1px solid #e0e0e0;
+      background-color: #fafafa;
+    }
+
+    .faq-item.expanded .faq-answer {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #b71c1c;
+      box-shadow: 0 0 4px rgba(183, 28, 28, 0.1);
+    }
+
+    .form-input.textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .message-section {
+      margin-top: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-send {
+      background-color: #b71c1c;
+      color: white;
+    }
+
+    .btn-send:hover {
+      background-color: #8b1515;
+    }
+
+    .btn-cancel {
+      background-color: #b71c1c;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: #8b1515;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: white;
+      border-top: 1px solid #e0e0e0;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-radius: 0 0 28px 28px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #999;
+      font-size: 10px;
+      transition: color 0.3s;
+    }
+
+    .nav-item:hover {
+      color: #b71c1c;
+    }
+
+    .nav-item.active {
+      color: #b71c1c;
+      font-weight: 600;
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Scrollbar styling */
+    .content::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 3px;
+    }
+
+    .content::-webkit-scrollbar-thumb:hover {
+      background: #ccc;
+    }
+
+    @media (max-width: 480px) {
+      .phone-frame {
+        width: 100%;
+        height: auto;
+        max-width: 360px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone-frame">
+    <!-- Header -->
+    <div class="header">
+      <h1>Centro de ayuda<br>y soporte</h1>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- FAQ Section -->
+      <div class="faq-section">
+        <div class="faq-title">
+          <span class="star">★</span>
+          <span>Preguntas frecuentes</span>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>¿Como reportar emergencia?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-answer">
+            Accede a la sección de reportar emergencia en el menú principal y completa el formulario con los detalles del incidente.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>¿Que hacer despues de enviar una alerta?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-answer">
+            Después de enviar una alerta, el sistema notificará a los encargados. Puedes consultar el estado en el historial de alertas.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>¿Como cambiar mi contraseña?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-answer">
+            Ve a Menú > Configuración y selecciona "Cambiar contraseña". Ingresa tu contraseña actual y la nueva.
+          </div>
+        </div>
+
+        <div class="faq-item" onclick="toggleFaq(this)">
+          <div class="faq-question">
+            <span>¿Como contactar a los encargados?</span>
+            <span class="faq-toggle">▼</span>
+          </div>
+          <div class="faq-answer">
+            Puedes contactar a los encargados directamente desde esta sección rellenando el formulario de contacto.
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Form -->
+      <div class="form-group">
+        <label class="form-label">Nombre del encargado :</label>
+        <input type="text" class="form-input" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Correo :</label>
+        <input type="email" class="form-input" placeholder="">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Telefono :</label>
+        <input type="tel" class="form-input" placeholder="">
+      </div>
+
+      <!-- Help Message Form -->
+      <div class="message-section">
+        <div class="section-title">Enviar mensaje de ayuda</div>
+
+        <div class="form-group">
+          <label class="form-label">Asunto:</label>
+          <input type="text" class="form-input" placeholder="">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mensaje:</label>
+          <textarea class="form-input textarea" placeholder=""></textarea>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="button-group">
+        <button class="btn btn-send" onclick="sendMessage()">Enviar mensaje</button>
+        <button class="btn btn-cancel" onclick="cancelForm()">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a href="home.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Home
+      </a>
+      <a href="emergency.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3 17.25V21h4V9H3v8.25zM9 3h6v4H9V3zm9.5 2.5h-4v4h4v-4zm0 6h-4v4h4v-4zm0 6h-4v4h4v-4z"/>
+        </svg>
+        Citas
+      </a>
+      <a href="#" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+        </svg>
+        Notif
+      </a>
+      <a href="menu.html" class="nav-item">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+        </svg>
+        Perfil
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function toggleFaq(element) {
+      element.classList.toggle('expanded');
+    }
+
+    function sendMessage() {
+      alert('Mensaje enviado exitosamente');
+    }
+
+    function cancelForm() {
+      window.history.back();
+    }
+  </script>
+</body>
+</html>
