@@ -1,0 +1,17 @@
+{
+  "name": "SACE App",
+  "description": "Sistema de Alertas Escolares - Aplicación Web",
+  "repository": "https://github.com/tu-usuario/sace-app",
+  "keywords": ["nodejs", "express", "sace", "web"],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "NODE_ENV": {
+      "description": "Node environment",
+      "value": "production"
+    }
+  }
+}
