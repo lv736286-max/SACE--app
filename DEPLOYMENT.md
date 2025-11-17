@@ -38,6 +38,8 @@ npm start
 # Luego abre: http://localhost:3000
 ```
 
+NOTE: Triggering GitHub Actions to publish static mockup to GitHub Pages.
+
 ---
 
 ## 🎯 RECOMENDACIÓN:
